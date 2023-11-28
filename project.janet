@@ -18,14 +18,18 @@
   (def v (->>
            (:read (p :out) :all)
            (string/trim)
-           (string/split " ")))
+           (string/split " ")
+           ((fn [x] (filter |(> (length $0) 0) x)))))
   v)
 
 (if use-system-lib
   (declare-native
     :name "sqlite3"
-    :cflags (pkg-config ["sqlite3" "--cflags"]
-                        {"PKG_CONFIG_ALLOW_SYSTEM_CFLAGS" "1"})
+    :cflags @[;(pkg-config ["sqlite3" "--cflags"]
+                           {"PKG_CONFIG_ALLOW_SYSTEM_CFLAGS" "1"})
+              "-DSQLITE_ENABLE_FTS5"
+              "-DSQLITE_ENABLE_SESSION"
+              "-DSQLITE_ENABLE_DBSTAT_VTAB"]
     :lflags (pkg-config ["sqlite3" "--libs"])
     :source @["main.c"]
     :defines {"USE_SYSTEM_SQLITE" use-system-lib})
