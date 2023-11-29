@@ -29,7 +29,8 @@
                            {"PKG_CONFIG_ALLOW_SYSTEM_CFLAGS" "1"})
               "-DSQLITE_ENABLE_FTS5"
               "-DSQLITE_ENABLE_SESSION"
-              "-DSQLITE_ENABLE_DBSTAT_VTAB"]
+              "-DSQLITE_ENABLE_DBSTAT_VTAB"
+              "-DSQLITE_ENABLE_JSON1"]
     :lflags (pkg-config ["sqlite3" "--libs"])
     :source @["main.c"]
     :defines {"USE_SYSTEM_SQLITE" use-system-lib})
